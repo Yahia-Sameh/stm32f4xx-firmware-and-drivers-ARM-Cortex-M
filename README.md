@@ -22,26 +22,26 @@ A collection of bare-metal drivers and firmware for ARM Cortex-M microcontroller
 - Other STM32F4xx series devices
 - ARM Cortex-M3/M4 based microcontrollers with minor adaptations
 
-## Project Structure
 
 
-STM32_BareMetal_Drivers/
-│
-├── Assembler/          # ARM assembly routines and startup code
-├── DMA/               # Direct Memory Access controller driver
-├── GPIO/              # General Purpose Input/Output driver
-├── HTFT/              # TFT display driver and interface
-├── LED_Matrix/        # LED matrix control library
-├── NVIC/              # Nested Vectored Interrupt Controller driver
-├── RCC/               # Reset and Clock Control driver
-├── RCC_test/          # RCC configuration test suite
-├── SYSCFG/            # System Configuration Controller driver
-├── SYSTICK/           # System Timer driver
-├── USART/             # Universal Synchronous/Asynchronous Receiver/Transmitter driver
-├── Documentation/     # Datasheets, reference manuals, and guides
-├── Applications/      # Example applications using the drivers
-├── Libraries/         # Hardware abstraction and utility libraries
-└── Tests/             # Unit tests and verification code
+
+## STM32 BareMetal Drivers 
+
+## Core Drivers Directory Structure
+
+| Directory | Description 
+|-----------|-------------|
+| **Assembler** | ARM assembly routines and startup code 
+| **DMA** | Direct Memory Access controller driver 
+| **GPIO** | General Purpose Input/Output driver 
+| **HTFT** | TFT display driver and interface library 
+| **LED_Matrix** | LED matrix control and animation library 
+| **NVIC** | Nested Vectored Interrupt Controller driver 
+| **RCC** | Reset and Clock Control driver 
+| **RCC_test** | RCC configuration test and validation suite
+| **SYSCFG** | System Configuration Controller driver
+| **SYSTICK** | System Timer driver and delay functions 
+| **USART** | Universal Synchronous/Asynchronous Receiver/Transmitter driver 
 
 
 ## Importing into STM32CubeIDE
