@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename resource &apos;NVIC/Inc/NVIC_header.h&apos; to &apos;NVIC_priv.h&apos;" description="Rename resource &apos;NVIC_header.h&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Inc/NVIC_header.h" name="NVIC_priv.h" stamp="1754222782217" updateReferences="true"/>
-</session>
