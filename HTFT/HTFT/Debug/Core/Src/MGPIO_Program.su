@@ -1,0 +1,7 @@
+../Core/Src/MGPIO_Program.c:9:6:MGPIO_voidSetMode	16	static
+../Core/Src/MGPIO_Program.c:32:6:MGPIO_voidSetOutputConfig	16	static
+../Core/Src/MGPIO_Program.c:72:6:MGPIO_voidSetPinValue	16	static
+../Core/Src/MGPIO_Program.c:103:6:MGPIO_voidSetPinValueAtomic	24	static
+../Core/Src/MGPIO_Program.c:150:6:MGPIO_voidSetInputConfig	16	static
+../Core/Src/MGPIO_Program.c:181:4:MGPIO_u8GetPinValue	24	static
+../Core/Src/MGPIO_Program.c:211:6:MGPIO_voidSetAlternativeConfig	16	static

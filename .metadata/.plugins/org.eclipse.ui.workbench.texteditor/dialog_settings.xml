@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item key="hasShownOverlayPopupBefore" value="true"/>
+	<item key="replaceBarOpen" value="true"/>
+	<list key="replacehistory">
+		<item value="MRCC-&gt;"/>
+		<item value="MRCC"/>
+		<item value="OFF"/>
+		<item value="ON"/>
+	</list>
+	<list key="searchhistory">
+		<item value="RCC-&gt;"/>
+		<item value="RCC"/>
+		<item value="PER_OFF"/>
+		<item value="PER_ON"/>
+		<item value="MRCC_t"/>
+	</list>
+</section>

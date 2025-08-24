@@ -1,0 +1,103 @@
+#ifndef USART_DRIVER_H
+#define USART_DRIVER_H
+
+#include <stdint.h>
+#include "RCC_private.h"  // Include your RCC private header
+
+// USART peripheral base addresses
+#define USART1_BASE           (0x40011000U)
+#define USART2_BASE           (0x40004400U)
+#define USART6_BASE           (0x40011400U)
+
+typedef struct {
+    volatile uint32_t CR1;      // Control register 1
+    volatile uint32_t CR2;      // Control register 2
+    volatile uint32_t CR3;      // Control register 3
+    volatile uint32_t BRR;      // Baud rate register
+    volatile uint32_t GTPR;     // Guard time and prescaler register
+    volatile uint32_t RTOR;     // Receiver timeout register
+    volatile uint32_t RQR;      // Request register
+    volatile uint32_t ISR;      // Interrupt and status register
+    volatile uint32_t ICR;      // Interrupt flag clear register
+    volatile uint32_t RDR;      // Receive data register
+    volatile uint32_t TDR;      // Transmit data register
+} USART_TypeDef;
+
+#define USART1              ((USART_TypeDef *)USART1_BASE)
+#define USART2              ((USART_TypeDef *)USART2_BASE)
+#define USART6              ((USART_TypeDef *)USART6_BASE)
+
+// USART CR1 bits
+#define USART_CR1_UE        (1 << 0)    // USART enable
+#define USART_CR1_TE        (1 << 3)    // Transmitter enable
+#define USART_CR1_RE        (1 << 2)    // Receiver enable
+#define USART_CR1_RXNEIE    (1 << 5)    // RX interrupt enable
+#define USART_CR1_TXEIE     (1 << 7)    // TX interrupt enable
+
+// USART ISR bits
+#define USART_ISR_TXE       (1 << 7)    // Transmit data register empty
+#define USART_ISR_RXNE      (1 << 5)    // Read data register not empty
+#define USART_ISR_TC        (1 << 6)    // Transmission complete
+#define USART_ISR_ORE       (1 << 3)    // Overrun error
+
+// USART ICR bits
+#define USART_ICR_TCCF      (1 << 6)    // Transmission complete clear flag
+#define USART_ICR_ORECF     (1 << 3)    // Overrun error clear flag
+
+// Bus definitions for RCC functions
+#define RCC_BUS_APB1        0
+#define RCC_BUS_APB2        1
+#define RCC_BUS_AHB1        2
+
+// Peripheral definitions for RCC functions
+#define RCC_PERIPH_USART1   4
+#define RCC_PERIPH_USART2   17
+#define RCC_PERIPH_USART6   5
+#define RCC_PERIPH_GPIOA    0
+
+typedef enum {
+    USART_STOPBITS_1,
+    USART_STOPBITS_0_5,
+    USART_STOPBITS_2
+} USART_StopBits;
+
+typedef enum {
+    USART_WORDLENGTH_8B,
+    USART_WORDLENGTH_9B
+} USART_WordLength;
+
+typedef enum {
+    USART_PARITY_NONE,
+    USART_PARITY_EVEN,
+    USART_PARITY_ODD
+} USART_Parity;
+
+typedef enum {
+    USART_HWCONTROL_NONE,
+    USART_HWCONTROL_RTS,
+    USART_HWCONTROL_CTS,
+    USART_HWCONTROL_RTS_CTS
+} USART_HWFlowControl;
+
+typedef struct {
+    uint32_t BaudRate;
+    USART_WordLength WordLength;
+    USART_StopBits StopBits;
+    USART_Parity Parity;
+    USART_HWFlowControl HWFlowControl;
+    uint8_t Mode; // Combination of USART_CR1_TE and USART_CR1_RE
+} USART_InitTypeDef;
+
+// Function prototypes
+void USART_Init(USART_TypeDef *USARTx, USART_InitTypeDef *init);
+void USART_Enable(USART_TypeDef *USARTx);
+void USART_Disable(USART_TypeDef *USARTx);
+void USART_SendData(USART_TypeDef *USARTx, uint16_t data);
+uint16_t USART_ReceiveData(USART_TypeDef *USARTx);
+void USART_SendString(USART_TypeDef *USARTx, const char *str);
+void USART_EnableInterrupt(USART_TypeDef *USARTx, uint32_t interrupt);
+void USART_DisableInterrupt(USART_TypeDef *USARTx, uint32_t interrupt);
+void USART_ClearFlag(USART_TypeDef *USARTx, uint32_t flag);
+uint8_t USART_GetFlagStatus(USART_TypeDef *USARTx, uint32_t flag);
+
+#endif // USART_DRIVER_H

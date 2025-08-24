@@ -1,0 +1,81 @@
+/*
+ * GPIO_private.h
+ *
+ *  Created on: Aug 4, 2025
+ *      Author: cgame
+ */
+
+#ifndef GPIO_PRIVATE_H_
+#define GPIO_PRIVATE_H_
+
+#pragma once
+
+#include <stdint.h>
+
+typedef enum {
+    GPIO_PORTA,
+    GPIO_PORTB,
+    GPIO_PORTC,
+    GPIO_PORTD,
+    GPIO_PORTE,
+    GPIO_PORTF,
+    GPIO_PORTG,
+    GPIO_PORTH
+} GPIO_Port;
+
+typedef enum {
+    GPIO_PIN0, GPIO_PIN1, GPIO_PIN2,  GPIO_PIN3,
+    GPIO_PIN4, GPIO_PIN5, GPIO_PIN6,  GPIO_PIN7,
+    GPIO_PIN8, GPIO_PIN9, GPIO_PIN10, GPIO_PIN11,
+    GPIO_PIN12,GPIO_PIN13,GPIO_PIN14, GPIO_PIN15
+} GPIO_Pin;
+
+typedef enum {
+    GPIO_MODE_INPUT,
+    GPIO_MODE_OUTPUT,
+    GPIO_MODE_AF,
+    GPIO_MODE_ANALOG
+} GPIO_Mode;
+
+typedef enum {
+    GPIO_OTYPE_PP,
+    GPIO_OTYPE_OD
+} GPIO_OType;
+
+typedef enum {
+    GPIO_SPEED_LOW,
+    GPIO_SPEED_MEDIUM,
+    GPIO_SPEED_HIGH,
+    GPIO_SPEED_VERY_HIGH
+} GPIO_Speed;
+
+typedef enum {
+    GPIO_PULL_NONE,
+    GPIO_PULL_UP,
+    GPIO_PULL_DOWN
+} GPIO_Pull;
+
+typedef enum {
+    GPIO_LOW = 0,
+    GPIO_HIGH = 1
+} GPIO_State;
+
+typedef struct {
+    GPIO_Port port;
+    GPIO_Pin pin;
+    GPIO_Mode mode;
+    GPIO_OType otype;
+    GPIO_Speed speed;
+    GPIO_Pull pull;
+    uint8_t alternate; // AF0-AF15
+} GPIO_PinConfig;
+
+/* Function prototypes */
+void GPIO_Pin_Init(const GPIO_PinConfig *config);
+void GPIO_Pin_Write(GPIO_Port port, GPIO_Pin pin, GPIO_State state);
+GPIO_State GPIO_Pin_Read(GPIO_Port port, GPIO_Pin pin);
+void GPIO_Pin_Toggle(GPIO_Port port, GPIO_Pin pin);
+void GPIO_Port_Write(GPIO_Port port, uint16_t value);
+uint16_t GPIO_Port_Read(GPIO_Port port);
+
+#endif /* GPIO_PRIVATE_H_ */

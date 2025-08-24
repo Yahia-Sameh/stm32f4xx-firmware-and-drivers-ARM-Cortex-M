@@ -1,0 +1,28 @@
+22:02:28 **** Incremental Build of configuration Debug for project LED_Matrix ****
+make -j8 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DSTM32F401CCUx -DSTM32 -DSTM32F4 -c -I../Inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Src/main.o"
+arm-none-eabi-gcc -o "LED_Matrix.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\Personal studies\ITI embedded\workspace_2\LED_Matrix\STM32F401CCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LED_Matrix.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LED_Matrix.elf
+ 
+arm-none-eabi-size  LED_Matrix.elf 
+arm-none-eabi-objdump -h -S LED_Matrix.elf  > "LED_Matrix.list"
+   text	   data	    bss	    dec	    hex	filename
+    664	      0	   1568	   2232	    8b8	LED_Matrix.elf
+Finished building: default.size.stdout
+ 
+Finished building: LED_Matrix.list
+ 
+12:27:45 **** Incremental Build of configuration Debug for project HTFT ****
+make -j8 all 
+arm-none-eabi-size  HTFT.elf 
+   text	   data	    bss	    dec	    hex	filename
+  43800	     16	   1568	  45384	   b148	HTFT.elf
+Finished building: default.size.stdout
+ 
+12:28:01 **** Incremental Build of configuration Debug for project HTFT ****
+make -j8 all 
+arm-none-eabi-size  HTFT.elf 
+   text	   data	    bss	    dec	    hex	filename
+  43800	     16	   1568	  45384	   b148	HTFT.elf
+Finished building: default.size.stdout
+ 

@@ -1,0 +1,9 @@
+../Src/main.c:7:13:SYSTICK_Enable	1
+../Src/main.c:11:13:SYSTICK_Disable	1
+../Src/main.c:15:13:SYSTICK_WaitForCount	2
+../Src/main.c:20:6:SYSTICK_Init	1
+../Src/main.c:36:6:SYSTICK_DelayMs	2
+../Src/main.c:56:6:SYSTICK_DelayUs	2
+../Src/main.c:76:10:SYSTICK_GetRemainingTicks	1
+../Src/main.c:80:6:SYSTICK_SetReloadValue	1
+../Src/main.c:85:5:main	1

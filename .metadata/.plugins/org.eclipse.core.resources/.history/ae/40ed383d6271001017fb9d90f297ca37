@@ -1,0 +1,30 @@
+// syscfg.c
+#include "SYSCFG_Private.h"
+
+/**
+ * @brief Maps an EXTI line to a GPIO port
+ * @param exti_line EXTI line number (0-15)
+ * @param port GPIO port (SYSCFG_PORTA to SYSCFG_PORTH)
+ *
+ * Example:
+ *   syscfg_exti_map(0, SYSCFG_PORTA); // PA0 -> EXTI0
+ *   syscfg_exti_map(5, SYSCFG_PORTC); // PC5 -> EXTI5
+ */
+void syscfg_exti_map(uint8_t exti_line, SYSCFG_Port port)
+{
+    // Validate inputs (optional but recommended)
+    if (exti_line > 15) return;
+    if (port > SYSCFG_PORTH) return;
+
+    // Each EXTICR register controls 4 EXTI lines (4 bits per line)
+    const uint8_t reg_index = exti_line / 4;
+    const uint8_t bit_pos = (exti_line % 4) * 4;
+
+    // Clear old mapping and set new one atomically
+    SYSCFG->EXTICR[reg_index] = (SYSCFG->EXTICR[reg_index] & ~(0xF << bit_pos)) | (port << bit_pos);
+}
+
+
+int main(){
+	while(1);
+}

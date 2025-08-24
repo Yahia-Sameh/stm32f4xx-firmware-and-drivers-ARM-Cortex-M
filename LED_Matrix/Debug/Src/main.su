@@ -1,0 +1,6 @@
+../Src/main.c:8:6:LEDMX_Init	24	static
+../Src/main.c:49:6:LEDMX_Clear	24	static
+../Src/main.c:55:6:LEDMX_SetPixel	16	static
+../Src/main.c:65:6:LEDMX_Refresh	24	static
+../Src/main.c:85:6:LEDMX_LoadFrame	24	static
+../Src/main.c:90:5:main	4	static

@@ -1,0 +1,11 @@
+../Src/main.c:4:6:USART_Init	13
+../Src/main.c:73:6:USART_Enable	1
+../Src/main.c:77:6:USART_Disable	1
+../Src/main.c:81:6:USART_SendData	2
+../Src/main.c:89:10:USART_ReceiveData	3
+../Src/main.c:102:6:USART_SendString	2
+../Src/main.c:108:6:USART_EnableInterrupt	1
+../Src/main.c:112:6:USART_DisableInterrupt	1
+../Src/main.c:116:6:USART_ClearFlag	1
+../Src/main.c:120:9:USART_GetFlagStatus	1
+../Src/main.c:124:5:main	1

@@ -1,0 +1,38 @@
+/*
+ * RCC_interface.h
+ *
+ *  Created on: Aug 3, 2025
+ *      Author: cgame
+ */
+
+#ifndef RCC_INTERFACE_H_
+#define RCC_INTERFACE_H_
+
+/* Clock Source Definitions */
+#define HSI_CLK         0x00U  // HSI selected as system clock
+#define HSE_CLK         0x01U  // HSE selected as system clock
+#define PLL_CLK         0x02U  // PLL selected as system clock
+
+/* Clock Status Definitions */
+#define CLK_ON          0x01U
+#define CLK_OFF         0x00U
+
+/* Peripheral States */
+#define PER_ON          0x01U
+#define PER_OFF         0x00U
+
+/* Bus Definitions */
+#define AHB             0x00U
+#define APB1            0x01U
+#define APB2            0x02U
+/* PLL Source Options */
+#define PLL_HSI         0x00U
+#define PLL_HSE         0x01U
+#define PLL_HSE_DIV_2   0x03U
+
+/* PLL Multiplication Factors */
+#define PLL_MUL_2       0x00U
+#define PLL_MUL_3       0x01U
+/* ... up to PLL_MUL_16 ... */
+
+#endif /* RCC_INTERFACE_H_ */

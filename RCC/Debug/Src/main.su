@@ -1,0 +1,9 @@
+../Src/main.c:6:6:RCC_vSetClkSts	16	static
+../Src/main.c:50:6:RCC_vSetSysClk	16	static
+../Src/main.c:56:6:RCC_vPLLConfig	16	static
+../Src/main.c:75:6:RCC_vAHBConfig	16	static
+../Src/main.c:81:6:RCC_vAPB1Config	16	static
+../Src/main.c:87:6:RCC_vAPB2Config	16	static
+../Src/main.c:93:6:RCC_vAHPPerSts	16	static
+../Src/main.c:101:6:RCC_vABPPerSts	16	static
+../Src/main.c:120:5:main	4	static

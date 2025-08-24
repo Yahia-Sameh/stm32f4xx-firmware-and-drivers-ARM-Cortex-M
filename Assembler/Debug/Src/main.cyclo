@@ -1,0 +1,10 @@
+../Src/main.c:65:6:add_symbol	2
+../Src/main.c:73:5:get_symbol_address	3
+../Src/main.c:83:5:get_register_num	4
+../Src/main.c:90:5:parse_immediate	3
+../Src/main.c:97:6:is_register	9
+../Src/main.c:112:6:preprocess_line	4
+../Src/main.c:127:6:first_pass	5
+../Src/main.c:151:6:assemble_instruction	11
+../Src/main.c:198:6:second_pass	6
+../Src/main.c:232:5:main	4

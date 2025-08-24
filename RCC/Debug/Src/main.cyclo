@@ -1,0 +1,9 @@
+../Src/main.c:6:6:RCC_vSetClkSts	16
+../Src/main.c:50:6:RCC_vSetSysClk	1
+../Src/main.c:56:6:RCC_vPLLConfig	5
+../Src/main.c:75:6:RCC_vAHBConfig	1
+../Src/main.c:81:6:RCC_vAPB1Config	1
+../Src/main.c:87:6:RCC_vAPB2Config	1
+../Src/main.c:93:6:RCC_vAHPPerSts	3
+../Src/main.c:101:6:RCC_vABPPerSts	7
+../Src/main.c:120:5:main	1

@@ -1,0 +1,3 @@
+../Core/Src/MRCC_Program.c:10:6:MRCC_voidInit	2
+../Core/Src/MRCC_Program.c:120:6:MRCC_voidEnablePeripheralClock	6
+../Core/Src/MRCC_Program.c:137:6:MRCC_voidDisablePeripheralClock	6

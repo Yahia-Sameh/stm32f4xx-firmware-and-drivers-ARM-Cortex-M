@@ -1,0 +1,36 @@
+/*
+ * DMA_private.h
+ *
+ *  Created on: Aug 4, 2025
+ *      Author: cgame
+ */
+
+#ifndef DMA_PRIVATE_H_
+#define DMA_PRIVATE_H_
+#include <stdint.h>
+
+typedef struct {
+    // Interrupt Status Registers (Offset 0x00 - 0x0C)
+    volatile uint32_t DMA_LISR;    // Low Interrupt Status Register (0x00)
+    volatile uint32_t DMA_HISR;    // High Interrupt Status Register (0x04)
+    volatile uint32_t DMA_LIFCR;   // Low Interrupt Flag Clear Register (0x08)
+    volatile uint32_t DMA_HIFCR;   // High Interrupt Flag Clear Register (0x0C)
+
+    // Stream Registers (8 streams, each with 0x18-byte spacing)
+    struct {
+        volatile uint32_t DMA_SxCR;    // Configuration Register (e.g., 0x10 for S0)
+        volatile uint32_t DMA_SxNDTR;  // Number of Data Items Register (e.g., 0x14)
+        volatile uint32_t DMA_SxPAR;   // Peripheral Address Register (e.g., 0x18)
+        volatile uint32_t DMA_SxM0AR;  // Memory 0 Address Register (e.g., 0x1C)
+        volatile uint32_t DMA_SxM1AR;  // Memory 1 Address Register (e.g., 0x20, if DBM=1)
+        volatile uint32_t DMA_SxFCR;   // FIFO Control Register (e.g., 0x24)
+    } Stream[8];  // Streams 0-7 (offsets: S0=0x10, S1=0x28, ..., S7=0xB8)
+} DMA_TypeDef;
+
+#define DMA_BASE    0x40026000UL
+#define DMA         ((DMA_TypeDef*) DMA_BASE)
+
+
+
+
+#endif /* DMA_PRIVATE_H_ */
