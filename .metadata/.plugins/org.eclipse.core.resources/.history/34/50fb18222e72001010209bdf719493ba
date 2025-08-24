@@ -1,0 +1,79 @@
+#include "led_matrix.h"
+
+
+void LEDMX_Init(LED_Matrix* matrix, TIM_HandleTypeDef* refresh_timer) {
+    matrix->refresh_timer = refresh_timer;
+    matrix->current_row = 0;
+    matrix->brightness = 100;
+
+    // Initialize all rows and columns
+    for (int i = 0; i < MATRIX_ROWS; i++) {
+        HAL_GPIO_WritePin(matrix->row_ports[i], matrix->row_pins[i], GPIO_PIN_RESET);
+    }
+    for (int i = 0; i < MATRIX_COLS; i++) {
+        HAL_GPIO_WritePin(matrix->col_ports[i], matrix->col_pins[i], GPIO_PIN_SET);
+    }
+
+    LEDMX_Clear(matrix);
+
+    // Start refresh timer
+    HAL_TIM_Base_Start_IT(matrix->refresh_timer);
+}
+
+void LEDMX_Clear(LED_Matrix* matrix) {
+    for (int i = 0; i < MATRIX_ROWS; i++) {
+        matrix->buffer[i] = 0x00;
+    }
+}
+
+void LEDMX_SetPixel(LED_Matrix* matrix, uint8_t x, uint8_t y, uint8_t state) {
+    if (x >= MATRIX_COLS || y >= MATRIX_ROWS) return;
+
+    if (state) {
+        matrix->buffer[y] |= (1 << x);
+    } else {
+        matrix->buffer[y] &= ~(1 << x);
+    }
+}
+
+void LEDMX_SetBrightness(LED_Matrix* matrix, uint8_t brightness) {
+    if (brightness > 100) brightness = 100;
+    matrix->brightness = brightness;
+
+    // Adjust timer period if using PWM for brightness
+    // __HAL_TIM_SET_AUTORELOAD(matrix->refresh_timer, new_period);
+}
+
+void LEDMX_LoadFrame(LED_Matrix* matrix, uint8_t frame[MATRIX_ROWS]) {
+    for (int i = 0; i < MATRIX_ROWS; i++) {
+        matrix->buffer[i] = frame[i];
+    }
+}
+
+void LEDMX_RefreshHandler(LED_Matrix* matrix) {
+    // Turn off current row
+    HAL_GPIO_WritePin(matrix->row_ports[matrix->current_row],
+                     matrix->row_pins[matrix->current_row],
+                     GPIO_PIN_RESET);
+
+    // Move to next row
+    matrix->current_row = (matrix->current_row + 1) % MATRIX_ROWS;
+
+    // Set columns for new row
+    for (int col = 0; col < MATRIX_COLS; col++) {
+        if (matrix->buffer[matrix->current_row] & (1 << col)) {
+            HAL_GPIO_WritePin(matrix->col_ports[col],
+                             matrix->col_pins[col],
+                             GPIO_PIN_RESET); // Active low
+        } else {
+            HAL_GPIO_WritePin(matrix->col_ports[col],
+                             matrix->col_pins[col],
+                             GPIO_PIN_SET);
+        }
+    }
+
+    // Enable new row
+    HAL_GPIO_WritePin(matrix->row_ports[matrix->current_row],
+                     matrix->row_pins[matrix->current_row],
+                     GPIO_PIN_SET);
+}

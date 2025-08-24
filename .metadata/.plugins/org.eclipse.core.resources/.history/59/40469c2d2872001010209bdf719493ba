@@ -1,0 +1,111 @@
+#include <stdint.h>
+#include "USART_private.h"
+#include "RCC_config.h"
+#include "RCC_interface.h"
+#include "RCC_private.h"
+
+// Simple delay function
+static void delay(uint32_t count) {
+    for(uint32_t i = 0; i < count; i++);
+}
+
+void USART1_Init(void) {
+    // Enable GPIOA clock
+    MRCC->AHB1ENR |= MRCC_AHB1ENR_GPIOAEN;
+
+    // Enable USART1 clock
+    MRCC->APB2ENR |= MRCC_APB2ENR_USART1EN;
+
+    // Configure PA9 (TX) and PA10 (RX) in alternate function mode
+    GPIOA->MODER &= ~(GPIO_MODER_AF << (9 * 2) | GPIO_MODER_AF << (10 * 2));
+    GPIOA->MODER |= (GPIO_MODER_AF << (9 * 2) | GPIO_MODER_AF << (10 * 2));
+
+    // Set alternate function to AF7 (USART1) for PA9 and PA10
+    GPIOA->AFR[1] &= ~(GPIO_AF7_USART1 << ((9 - 8) * 4) | GPIO_AF7_USART1 << ((10 - 8) * 4));
+    GPIOA->AFR[1] |= (GPIO_AF7_USART1 << ((9 - 8) * 4) | GPIO_AF7_USART1 << ((10 - 8) * 4));
+
+    // Configure USART1
+    USART1->BRR = 0x0683; // 16MHz, 9600 baud
+    USART1->CR1 = USART_CR1_UE | USART_CR1_TE | USART_CR1_RE; // Enable USART, TX, RX
+}
+
+void USART2_Init(void) {
+    // Enable GPIOA clock
+    MRCC->AHB1ENR |= MRCC_AHB1ENR_GPIOAEN;
+
+    // Enable USART2 clock
+    MRCC->APB1ENR |= MRCC_APB1ENR_USART2EN;
+
+    // Configure PA2 (TX) and PA3 (RX) in alternate function mode
+    GPIOA->MODER &= ~(GPIO_MODER_AF << (2 * 2) | GPIO_MODER_AF << (3 * 2));
+    GPIOA->MODER |= (GPIO_MODER_AF << (2 * 2) | GPIO_MODER_AF << (3 * 2));
+
+    // Set alternate function to AF7 (USART2) for PA2 and PA3
+    GPIOA->AFR[0] &= ~(GPIO_AF7_USART2 << (2 * 4) | GPIO_AF7_USART2 << (3 * 4));
+    GPIOA->AFR[0] |= (GPIO_AF7_USART2 << (2 * 4) | GPIO_AF7_USART2 << (3 * 4));
+
+    // Configure USART2
+    USART2->BRR = 0x0683; // 16MHz, 9600 baud
+    USART2->CR1 = USART_CR1_UE | USART_CR1_TE | USART_CR1_RE; // Enable USART, TX, RX
+}
+
+void USART1_SendChar(char c) {
+    while(!(USART1->ISR & USART_ISR_TXE)); // Wait for transmit buffer empty
+    USART1->TDR = c;
+}
+
+void USART2_SendChar(char c) {
+    while(!(USART2->ISR & USART_ISR_TXE)); // Wait for transmit buffer empty
+    USART2->TDR = c;
+}
+
+char USART1_ReceiveChar(void) {
+    while(!(USART1->ISR & USART_ISR_RXNE)); // Wait for data received
+    return USART1->RDR;
+}
+
+char USART2_ReceiveChar(void) {
+    while(!(USART2->ISR & USART_ISR_RXNE)); // Wait for data received
+    return USART2->RDR;
+}
+
+void USART1_SendString(const char *str) {
+    while(*str) {
+        USART1_SendChar(*str++);
+    }
+}
+
+void USART2_SendString(const char *str) {
+    while(*str) {
+        USART2_SendChar(*str++);
+    }
+}
+
+int main(void) {
+    // Initialize USART1 (PA9-TX, PA10-RX)
+    USART1_Init();
+
+    // Initialize USART2 (PA2-TX, PA3-RX)
+    USART2_Init();
+
+    // Send startup message
+    USART1_SendString("USART1 Initialized\r\n");
+    USART2_SendString("USART2 Initialized\r\n");
+
+    while(1) {
+        // Echo received characters between USART1 and USART2
+        if(USART1->ISR & USART_ISR_RXNE) {
+            char c = USART1_ReceiveChar();
+            USART2_SendChar(c);
+        }
+
+        if(USART2->ISR & USART_ISR_RXNE) {
+            char c = USART2_ReceiveChar();
+            USART1_SendChar(c);
+        }
+
+        delay(100000);
+    }
+
+    return 0;
+}

@@ -1,0 +1,126 @@
+/*
+ * GPIO_private.h
+#include <stdint.h>
+ *
+ *  Created on: Aug 4, 2025
+ *      Author: cgame
+ */
+
+#ifndef GPIO_PRIVATE_H_
+#define GPIO_PRIVATE_H_
+
+#pragma once
+
+
+
+#include <stdint.h>
+
+typedef enum {
+    GPIO_PORTA,
+    GPIO_PORTB,
+    GPIO_PORTC,
+    GPIO_PORTD,
+    GPIO_PORTE,
+    GPIO_PORTF,
+    GPIO_PORTG,
+    GPIO_PORTH
+} GPIO_Port;
+
+typedef enum {
+    GPIO_PIN0, GPIO_PIN1, GPIO_PIN2,  GPIO_PIN3,
+    GPIO_PIN4, GPIO_PIN5, GPIO_PIN6,  GPIO_PIN7,
+    GPIO_PIN8, GPIO_PIN9, GPIO_PIN10, GPIO_PIN11,
+    GPIO_PIN12,GPIO_PIN13,GPIO_PIN14, GPIO_PIN15
+} GPIO_Pin;
+
+typedef enum {
+    GPIO_MODE_INPUT,
+    GPIO_MODE_OUTPUT,
+    GPIO_MODE_AF,
+    GPIO_MODE_ANALOG
+} GPIO_Mode;
+
+typedef enum {
+    GPIO_OTYPE_PP,
+    GPIO_OTYPE_OD
+} GPIO_OType;
+
+typedef enum {
+    GPIO_SPEED_LOW,
+    GPIO_SPEED_MEDIUM,
+    GPIO_SPEED_HIGH,
+    GPIO_SPEED_VERY_HIGH
+} GPIO_Speed;
+
+typedef enum {
+    GPIO_PULL_NONE,
+    GPIO_PULL_UP,
+    GPIO_PULL_DOWN
+} GPIO_Pull;
+
+typedef enum {
+    GPIO_LOW = 0,
+    GPIO_HIGH = 1
+} GPIO_State;
+
+typedef struct {
+    GPIO_Port port;
+    GPIO_Pin pin;
+    GPIO_Mode mode;
+    GPIO_OType otype;
+    GPIO_Speed speed;
+    GPIO_Pull pull;
+    uint8_t alternate; // AF0-AF15
+} GPIO_PinConfig;
+
+
+
+
+/* Base addresses */
+#define GPIOA_BASE      0x40020000UL
+#define GPIOB_BASE      0x40020400UL
+#define GPIOC_BASE      0x40020800UL
+#define GPIOD_BASE      0x40020C00UL
+#define GPIOE_BASE      0x40021000UL
+#define GPIOH_BASE      0x40021C00UL
+
+/* GPIO Register Structure */
+typedef struct {
+    volatile uint32_t MODER;    /* GPIO port mode register,              Address offset: 0x00 */
+    volatile uint32_t OTYPER;   /* GPIO port output type register,       Address offset: 0x04 */
+    volatile uint32_t OSPEEDR;  /* GPIO port output speed register,      Address offset: 0x08 */
+    volatile uint32_t PUPDR;    /* GPIO port pull-up/pull-down register, Address offset: 0x0C */
+    volatile uint32_t IDR;      /* GPIO port input data register,        Address offset: 0x10 */
+    volatile uint32_t ODR;      /* GPIO port output data register,       Address offset: 0x14 */
+    volatile uint32_t BSRR;     /* GPIO port bit set/reset register,     Address offset: 0x18 */
+    volatile uint32_t LCKR;     /* GPIO port configuration lock register,Address offset: 0x1C */
+    volatile uint32_t AFR[2];   /* GPIO alternate function registers,    Address offset: 0x20-0x24 */
+} GPIO_TypeDef;
+
+/* GPIO Port Pointers */
+#define GPIOA           ((GPIO_TypeDef *)GPIOA_BASE)
+#define GPIOB           ((GPIO_TypeDef *)GPIOB_BASE)
+#define GPIOC           ((GPIO_TypeDef *)GPIOC_BASE)
+#define GPIOD           ((GPIO_TypeDef *)GPIOD_BASE)
+#define GPIOE           ((GPIO_TypeDef *)GPIOE_BASE)
+#define GPIOH           ((GPIO_TypeDef *)GPIOH_BASE)
+
+/* GPIO Clock Enable Bits (AHB1ENR) */
+#define GPIOA_EN        0
+#define GPIOB_EN        1
+#define GPIOC_EN        2
+#define GPIOD_EN        3
+#define GPIOE_EN        4
+#define GPIOH_EN        7
+
+
+
+/* Function prototypes */
+void GPIO_Pin_Init(const GPIO_PinConfig *config);
+void GPIO_Pin_Write(GPIO_Port port, GPIO_Pin pin, GPIO_State state);
+GPIO_State GPIO_Pin_Read(GPIO_Port port, GPIO_Pin pin);
+void GPIO_Pin_Toggle(GPIO_Port port, GPIO_Pin pin);
+void GPIO_Port_Write(GPIO_Port port, uint16_t value);
+uint16_t GPIO_Port_Read(GPIO_Port port);
+
+#endif /* GPIO_PRIVATE_H_ */

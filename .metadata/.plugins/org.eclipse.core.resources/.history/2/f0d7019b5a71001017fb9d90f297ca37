@@ -1,0 +1,83 @@
+#include "GPIO_private.h"
+/* Private macros */
+#define MODE_MASK      0x3
+#define OTYPE_MASK     0x1
+#define SPEED_MASK     0x3
+#define PULL_MASK      0x3
+#define AFR_MASK       0xF
+
+/* Array of GPIO ports */
+static GPIO_TypeDef * const GPIO_PORT[] = {
+    GPIOA, GPIOB, GPIOC, GPIOD, GPIOE, GPIOH
+};
+
+/*===========================================================================*/
+void GPIO_Pin_Init(const GPIO_PinConfig *config)
+{
+    /* Configure pin mode */
+    GPIO_PORT[config->port]->MODER &= ~(MODE_MASK << (config->pin * 2));
+    GPIO_PORT[config->port]->MODER |= (config->mode << (config->pin * 2));
+
+    /* Configure pull-up/pull-down */
+    GPIO_PORT[config->port]->PUPDR &= ~(PULL_MASK << (config->pin * 2));
+    GPIO_PORT[config->port]->PUPDR |= (config->pull << (config->pin * 2));
+
+    /* Configure output settings if needed */
+    if (config->mode == GPIO_MODE_OUTPUT || config->mode == GPIO_MODE_AF)
+    {
+        /* Output type */
+        GPIO_PORT[config->port]->OTYPER &= ~(OTYPE_MASK << config->pin);
+        GPIO_PORT[config->port]->OTYPER |= (config->otype << config->pin);
+
+        /* Output speed */
+        GPIO_PORT[config->port]->OSPEEDR &= ~(SPEED_MASK << (config->pin * 2));
+        GPIO_PORT[config->port]->OSPEEDR |= (config->speed << (config->pin * 2));
+
+        /* Alternate function if applicable */
+        if (config->mode == GPIO_MODE_AF)
+        {
+            uint8_t afr_reg = config->pin / 8;
+            uint8_t afr_pos = (config->pin % 8) * 4;
+            GPIO_PORT[config->port]->AFR[afr_reg] &= ~(AFR_MASK << afr_pos);
+            GPIO_PORT[config->port]->AFR[afr_reg] |= (config->alternate << afr_pos);
+        }
+    }
+}
+
+/*===========================================================================*/
+void GPIO_Pin_Write(GPIO_Port port, GPIO_Pin pin, GPIO_State state)
+{
+    if (state == GPIO_HIGH)
+        GPIO_PORT[port]->BSRR = (1 << pin);
+    else
+        GPIO_PORT[port]->BSRR = (1 << (pin + 16));
+}
+
+/*===========================================================================*/
+GPIO_State GPIO_Pin_Read(GPIO_Port port, GPIO_Pin pin)
+{
+    return (GPIO_PORT[port]->IDR & (1 << pin)) ? GPIO_HIGH : GPIO_LOW;
+}
+
+/*===========================================================================*/
+void GPIO_Pin_Toggle(GPIO_Port port, GPIO_Pin pin)
+{
+    GPIO_PORT[port]->ODR ^= (1 << pin);
+}
+
+/*===========================================================================*/
+void GPIO_Port_Write(GPIO_Port port, uint16_t value)
+{
+    GPIO_PORT[port]->ODR = value;
+}
+
+/*===========================================================================*/
+uint16_t GPIO_Port_Read(GPIO_Port port)
+{
+    return GPIO_PORT[port]->IDR;
+}
+
+int main(){
+
+	while(1);
+}
